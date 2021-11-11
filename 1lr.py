@@ -514,6 +514,21 @@ def Bi_fri(enc_bi_dic, bi_dic):
 
     return dec_alpha
 
+def Mono(frir):
+    dec_alpha = {}
+    for k, v in frir.items():
+        buf, min_val, min_key = {}, 200, ""
+        for kf, vf in fri.items():
+            buf[kf] = abs(vf - v)
+            for key, val in buf.items():
+                if val <= min_val:
+                    min_val = val
+                    min_key = key
+        dec_alpha[k] = min_key
+
+    return dec_alpha
+
+
 def Tru_dec(enc_bi_dic, bi_dic, frir):
     dec_alpha = Bi_fri(enc_bi_dic, bi_dic)
     for k, v in enc_bi_dic.items():
@@ -562,6 +577,20 @@ def Fri_decrip(enc_text, bi_dic):
     for k, v in frir.items():
         frir[k] = 100 * v / c
     enc_bi_dic = bi_def(enc_text)
+
+    enc_text2=""
+    enc_text2+=enc_text
+
+    dec_alpha2 = Mono(frir)
+
+    for i in range(len(enc_text2) - 1):
+        for k, v in dec_alpha2.items():
+            if enc_text2[i] == k:
+                a = enc_text2[:i]
+                b = enc_text2[i + 1:]
+                enc_text2 = a + v + b
+                break
+    print("Анализ монограммами: ",enc_text2)
 
     dec_alpha = Tru_dec(enc_bi_dic, bi_dic, frir)
 
@@ -631,4 +660,4 @@ for i in text_list:
 print("Исходный текст: ",text)
 print("Зашифрованный текст: ",encripted)
 decr=prepare(Fri_decrip(encripted, bi_def(text)))
-print("Расшифрованный текст: ",decr)
+print("Анализ и моно- и би- граммами: ",decr)
