@@ -1,5 +1,5 @@
-import random as rd
-def shift(tx, step):
+
+def shift(tx, step): #функция циклического сдвига
     if step < 0:
         step = abs(step)
         for i in range(step):
@@ -10,15 +10,17 @@ def shift(tx, step):
     return tx
 
 def hash(st):
-    res,c,ls,buf="",0,[],0
-    for i in st:
+    res,c="",0
+    for i in st:    #подсчёт среднего арифметического по кодам
         c+=ord(i)
     k=int(c/len(st))
-    for i in st:
-        n=ord(i)
-        b=0
+
+    for i in st:    #обработка каждой буквы
+        n = ord(i)
+        ls, buf = [], 0
+        b = 0
         j = 1
-        while n:
+        while n:    #перевод в троичный код
             n, enc=divmod(n,3)
             b+=enc*j
             j *= 10
@@ -26,7 +28,7 @@ def hash(st):
             s=b%10
             b=b//10
             ls+=[s]
-        asc=shift(ls,k)
+        asc=shift(ls,k)     #циклический сдвиг на среднее k
         j=1
         for i in asc:
             buf+=i*j
